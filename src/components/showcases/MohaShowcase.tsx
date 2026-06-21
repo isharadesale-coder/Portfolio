@@ -94,6 +94,9 @@ const screens = [
   { src: `${BASE}/screens/cart.webp`, alt: "Cart" },
   { src: `${BASE}/screens/shipping.webp`, alt: "Checkout — shipping details" },
   { src: `${BASE}/screens/payment.webp`, alt: "Checkout — payment" },
+  { src: `${BASE}/screens/confirmation.webp`, alt: "Order confirmation" },
+  { src: `${BASE}/screens/orders.webp`, alt: "Current orders" },
+  { src: `${BASE}/screens/profile.webp`, alt: "Profile & settings" },
 ];
 
 const palette = [
@@ -322,24 +325,46 @@ export default function MohaShowcase({
 
       {/* SCREENS GALLERY */}
       <section className="overflow-hidden bg-[#080706] py-24 md:py-32">
-        <div className="shell">
-          <Eyebrow>Inside the app</Eyebrow>
-          <h2 className="mt-5 max-w-2xl text-3xl font-semibold tracking-tight md:text-5xl">
-            From the exhibition wall to your hand.
-          </h2>
+        <div className="shell flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <Eyebrow>Inside the app</Eyebrow>
+            <h2 className="mt-5 max-w-2xl text-3xl font-semibold tracking-tight md:text-5xl">
+              From the exhibition wall to your hand.
+            </h2>
+          </div>
+          <div className="flex items-center gap-2.5 text-[#8a8073]">
+            <span className="font-poppins text-[0.64rem] uppercase tracking-[0.22em]">
+              Swipe to explore
+            </span>
+            <motion.span
+              aria-hidden
+              animate={{ x: [0, 7, 0] }}
+              transition={{ repeat: Infinity, duration: 1.4, ease: "easeInOut" }}
+              className="text-xl leading-none"
+              style={{ color: GOLD }}
+            >
+              →
+            </motion.span>
+          </div>
         </div>
-        <div className="shell mt-14">
-          <div className="flex gap-4 overflow-x-auto pb-4 md:gap-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+
+        <div className="relative mt-12">
+          <div className="flex gap-4 overflow-x-auto pb-4 pl-[clamp(1.25rem,5vw,4rem)] pr-6 md:gap-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {screens.map((s, i) => (
               <Parallax
                 key={s.src}
                 speed={0.05 + (i % 2) * 0.08}
-                className="w-[44vw] shrink-0 sm:w-[220px]"
+                className="w-[46vw] shrink-0 sm:w-[210px]"
               >
                 <Phone src={s.src} alt={s.alt} />
               </Parallax>
             ))}
           </div>
+          {/* right-edge fade hints there's more to swipe */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 right-0 w-14 bg-gradient-to-l from-[#080706] to-transparent md:w-28"
+          />
         </div>
       </section>
 

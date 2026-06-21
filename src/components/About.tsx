@@ -27,25 +27,45 @@ export default function About() {
     ) {
       return;
     }
+    // Register here too — child effects run before the parent SmoothScroll
+    // effect, so without this the scrollTrigger is ignored and the words
+    // animate to full opacity immediately on load.
+    gsap.registerPlugin(ScrollTrigger);
+
     const ctx = gsap.context(() => {
       const words = gsap.utils.toArray<HTMLElement>(".about-word");
-      gsap.fromTo(
-        words,
-        { opacity: 0.18 },
-        {
-          opacity: 1,
-          stagger: 0.5,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ref.current,
-            start: "top 75%",
-            end: "bottom 70%",
-            scrub: true,
-          },
+      // Dim every word first so they all start faint, then scrub them to
+      // full opacity in reading order as the user scrolls through.
+      gsap.set(words, { opacity: 0.18 });
+      gsap.to(words, {
+        opacity: 1,
+        stagger: 0.5,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ref.current,
+          // Begin only once the heading is well into view, and tie the
+          // reveal to scroll through the section (not as it peeks in).
+          start: "top 62%",
+          end: "bottom 38%",
+          scrub: true,
+          invalidateOnRefresh: true,
         },
-      );
+      });
     }, ref);
-    return () => ctx.revert();
+
+    // The Work section's images/videos load after mount and push this
+    // section down, which leaves ScrollTrigger's start/end stale (the reveal
+    // looks "already done"). Recompute positions once everything settles.
+    const refresh = () => ScrollTrigger.refresh();
+    const t = window.setTimeout(refresh, 400);
+    window.addEventListener("load", refresh);
+    document.fonts?.ready.then(refresh).catch(() => {});
+
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("load", refresh);
+      ctx.revert();
+    };
   }, []);
 
   return (

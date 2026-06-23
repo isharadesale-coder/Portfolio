@@ -107,6 +107,9 @@ a {
 .font-pinyon {
   font-family: var(--font-pinyon), cursive;
 }
+.font-rubik {
+  font-family: var(--font-rubik), system-ui, sans-serif;
+}
 
 .eyebrow {
   font-family: var(--font-geist), sans-serif;
@@ -210,4 +213,13 @@ a {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+/* Typewriter caret blink (hero name) */
+@keyframes caretBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.caret {
+  animation: caretBlink 1s steps(1, end) infinite;
 }

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Reveal from "@/components/Reveal";
 import FocusMateShowcase from "@/components/showcases/FocusMateShowcase";
 import GridGlowShowcase from "@/components/showcases/GridGlowShowcase";
+import BundleShowcase from "@/components/showcases/BundleShowcase";
 import MohaShowcase from "@/components/showcases/MohaShowcase";
 import { getProject, getProjects, getProjectSlugs } from "@/lib/data";
 
@@ -35,7 +36,7 @@ export default async function ProjectPage({
   const project = await getProject(slug);
   if (!project) notFound();
 
-  const all = await getProjects();
+  const all = (await getProjects()).filter((p) => !p.comingSoon);
   const idx = all.findIndex((p) => p.slug === slug);
   const next = all[(idx + 1) % all.length];
 
@@ -63,6 +64,16 @@ export default async function ProjectPage({
   if (slug === "moha") {
     return (
       <MohaShowcase
+        project={project}
+        next={{ title: next.title, slug: next.slug }}
+      />
+    );
+  }
+
+  // Bespoke case study for Bundle of Apps (Dodo & Luma).
+  if (slug === "bundle-of-apps") {
+    return (
+      <BundleShowcase
         project={project}
         next={{ title: next.title, slug: next.slug }}
       />

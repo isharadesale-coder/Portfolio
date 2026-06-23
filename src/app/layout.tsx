@@ -8,6 +8,7 @@ import {
   Pinyon_Script,
   Playfair_Display,
   Poppins,
+  Rubik,
 } from "next/font/google";
 import "./globals.css";
 
@@ -67,6 +68,13 @@ const pinyon = Pinyon_Script({
   display: "swap",
 });
 
+// Per-project brand font (Bundle of Apps — Dodo & Luma use Rubik)
+const rubik = Rubik({
+  subsets: ["latin"],
+  variable: "--font-rubik",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Ishika Desale — Designer & Creative Developer",
   description:
@@ -85,7 +93,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geist.variable} ${anton.variable} ${archivo.variable} ${inter.variable} ${playfair.variable} ${dmSans.variable} ${poppins.variable} ${pinyon.variable} antialiased`}
+      className={`${geist.variable} ${anton.variable} ${archivo.variable} ${inter.variable} ${playfair.variable} ${dmSans.variable} ${poppins.variable} ${pinyon.variable} ${rubik.variable} antialiased`}
     >
       <body>{children}</body>
     </html>

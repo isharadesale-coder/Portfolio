@@ -3,10 +3,12 @@
 import Reveal from "./Reveal";
 
 const socials = [
-  { label: "Instagram", href: "#" },
-  { label: "Dribbble", href: "#" },
-  { label: "LinkedIn", href: "#" },
-  { label: "GitHub", href: "#" },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/designwithishara?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+  },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/ishika-desale" },
+  { label: "GitHub", href: "https://github.com/isharadesale-coder" },
 ];
 
 export default function Contact() {
@@ -50,6 +52,8 @@ export default function Contact() {
             <a
               key={s.label}
               href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="link-underline font-geist text-xs uppercase tracking-[0.2em] text-muted hover:text-fg"
             >
               {s.label}

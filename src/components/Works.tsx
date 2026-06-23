@@ -7,13 +7,9 @@ import WorkCursor from "./WorkCursor";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-function Card({ project }: { project: Project }) {
+function CardInner({ project }: { project: Project }) {
   return (
-    <Link
-      href={`/work/${project.slug}`}
-      data-cursor-view
-      className="group block h-full cursor-none"
-    >
+    <>
       <div className="relative h-[42vh] overflow-hidden border border-line bg-bg-card md:h-[58vh]">
         {project.coverUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -31,6 +27,13 @@ function Card({ project }: { project: Project }) {
             }}
           />
         )}
+        {project.comingSoon && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+            <span className="rounded-full border border-line-strong bg-bg/60 px-5 py-2 font-geist text-xs uppercase tracking-[0.22em] text-fg backdrop-blur-md">
+              Coming soon
+            </span>
+          </div>
+        )}
       </div>
       <div className="mt-5 flex items-baseline justify-between gap-4">
         <h3 className="font-geist text-xl font-medium tracking-tight md:text-2xl">
@@ -40,6 +43,25 @@ function Card({ project }: { project: Project }) {
           {project.category}
         </span>
       </div>
+    </>
+  );
+}
+
+function Card({ project }: { project: Project }) {
+  if (project.comingSoon) {
+    return (
+      <div className="block h-full" aria-label={`${project.title} — coming soon`}>
+        <CardInner project={project} />
+      </div>
+    );
+  }
+  return (
+    <Link
+      href={`/work/${project.slug}`}
+      data-cursor-view
+      className="group block h-full cursor-none"
+    >
+      <CardInner project={project} />
     </Link>
   );
 }

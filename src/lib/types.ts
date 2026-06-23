@@ -23,4 +23,6 @@ export type Project = {
   liveUrl?: string;
   repoUrl?: string;
   featured?: boolean;
+  /** Placeholder project — shown in the grid as "Coming soon", not clickable */
+  comingSoon?: boolean;
 };

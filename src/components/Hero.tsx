@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import ImageTrail from "./ImageTrail";
 
@@ -19,6 +19,11 @@ const PHRASES = [
   "User-Centric",
 ];
 
+const TYPE_MS = 95; // per character when typing
+const DELETE_MS = 45; // per character when backspacing
+const HOLD_FULL_MS = 1500; // pause once a word is fully typed
+const HOLD_EMPTY_MS = 350; // pause before typing the next word
+
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -28,36 +33,41 @@ export default function Hero() {
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
   const y = useTransform(scrollYProgress, [0, 1], [0, -60]);
 
-  const [i, setI] = useState(0);
-  const [intro, setIntro] = useState(true);
-  const introPlayed = useRef(false);
+  const [idx, setIdx] = useState(0); // which phrase
+  const [sub, setSub] = useState(0); // characters currently shown
+  const [deleting, setDeleting] = useState(false);
 
   const reduced =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Cinematic entry: hold the name, then begin cycling.
+  // Typewriter state machine: type → hold → backspace → next → repeat.
   useEffect(() => {
-    if (reduced) {
-      setIntro(false);
-      return;
+    if (reduced) return;
+    const phrase = PHRASES[idx];
+
+    // Finished typing a word → hold, then start deleting.
+    if (!deleting && sub === phrase.length) {
+      const t = setTimeout(() => setDeleting(true), HOLD_FULL_MS);
+      return () => clearTimeout(t);
     }
-    const t = setTimeout(() => {
-      setIntro(false);
-      setI(1);
-    }, 2900);
+    // Finished deleting → pause, then advance to the next word.
+    if (deleting && sub === 0) {
+      const t = setTimeout(() => {
+        setDeleting(false);
+        setIdx((v) => (v + 1) % PHRASES.length);
+      }, HOLD_EMPTY_MS);
+      return () => clearTimeout(t);
+    }
+    // Otherwise tick one character forward/back.
+    const t = setTimeout(
+      () => setSub((s) => s + (deleting ? -1 : 1)),
+      deleting ? DELETE_MS : TYPE_MS,
+    );
     return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [sub, deleting, idx, reduced]);
 
-  // Role cycle (only after the intro has finished).
-  useEffect(() => {
-    if (intro || reduced) return;
-    const t = setTimeout(() => setI((v) => (v + 1) % PHRASES.length), 1800);
-    return () => clearTimeout(t);
-  }, [i, intro, reduced]);
-
-  const firstIntro = i === 0 && !introPlayed.current && !reduced;
+  const text = reduced ? PHRASES[0] : PHRASES[idx].slice(0, sub);
 
   return (
     <section
@@ -70,44 +80,23 @@ export default function Hero() {
         style={{ opacity: fade, y }}
         className="shell relative z-10 flex flex-col items-center text-center"
       >
-        {/* Cinematic name → role cycle */}
+        {/* Typewriter name → role cycle */}
         <div className="flex h-[1.05em] items-center justify-center">
-          <AnimatePresence mode="wait">
-            <motion.h1
-              key={i}
-              initial={
-                firstIntro
-                  ? { clipPath: "inset(0 100% 0 0)", scale: 0.72, opacity: 1 }
-                  : { opacity: 0, y: 34, filter: "blur(10px)" }
-              }
-              animate={
-                firstIntro
-                  ? { clipPath: "inset(0 0% 0 0)", scale: 1, opacity: 1 }
-                  : { opacity: 1, y: 0, filter: "blur(0px)" }
-              }
-              exit={{ opacity: 0, y: -34, filter: "blur(10px)" }}
-              transition={
-                firstIntro
-                  ? {
-                      clipPath: { duration: 1.05, ease },
-                      scale: { duration: 0.7, ease, delay: 1 },
-                    }
-                  : { duration: 0.6, ease }
-              }
-              onAnimationComplete={() => {
-                if (firstIntro) introPlayed.current = true;
-              }}
-              className="font-geist whitespace-nowrap text-[clamp(2.6rem,10vw,11rem)] font-semibold leading-none tracking-[-0.025em]"
+          <h1 className="font-geist whitespace-nowrap text-[clamp(2.6rem,10vw,11rem)] font-semibold leading-none tracking-[-0.025em]">
+            {text}
+            <span
+              aria-hidden
+              className="caret ml-[0.06em] inline-block text-accent"
             >
-              {PHRASES[i]}
-            </motion.h1>
-          </AnimatePresence>
+              |
+            </span>
+          </h1>
         </div>
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease, delay: reduced ? 0.2 : 2 }}
+          transition={{ duration: 0.9, ease, delay: 0.5 }}
           className="mt-16 max-w-xl text-base leading-relaxed text-fg-dim md:mt-24 md:text-lg"
         >
           An Australia-based product &amp; interaction designer crafting sleek,

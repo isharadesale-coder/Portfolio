@@ -176,6 +176,7 @@ export default function GridGlowShowcase({
   });
   const mascotY = useTransform(scrollYProgress, [0, 1], [0, 38]);
   const phoneY = useTransform(scrollYProgress, [0, 1], [0, -90]);
+  const confusedY = useTransform(scrollYProgress, [0, 1], [0, -46]);
 
   return (
     <div className="bg-[#0b1610] font-sans text-[#e7f1e9]">
@@ -215,20 +216,33 @@ export default function GridGlowShowcase({
               </div>
             </div>
 
-            <div className="relative flex justify-center">
-              <motion.div style={{ y: phoneY }} className="w-[52%] max-w-[230px]">
-                <Phone
-                  src={`${BASE}/screens/watch-zones.webp`}
-                  alt="GridGlow home"
-                />
-              </motion.div>
+            <div className="relative flex min-h-[420px] items-center justify-center md:min-h-[520px]">
+              {/* confused mascot — peeks from behind the top-right */}
+              <motion.img
+                src={`${BASE}/assets/mascot-confused.webp`}
+                alt=""
+                aria-hidden
+                style={{ y: confusedY }}
+                className="pointer-events-none absolute right-0 top-0 z-0 w-[44%] max-w-[210px] drop-shadow-2xl md:-right-4"
+              />
+              {/* supplies mascot — peeks from behind the bottom-left */}
               <motion.img
                 src={`${BASE}/assets/mascot.webp`}
                 alt=""
                 aria-hidden
                 style={{ y: mascotY }}
-                className="pointer-events-none absolute -bottom-10 -left-2 w-[55%] max-w-[280px] drop-shadow-2xl"
+                className="pointer-events-none absolute bottom-0 left-0 z-0 w-[46%] max-w-[220px] drop-shadow-2xl md:-left-4"
               />
+              {/* phone sits on top, centred */}
+              <motion.div
+                style={{ y: phoneY }}
+                className="relative z-10 w-[52%] max-w-[228px]"
+              >
+                <Phone
+                  src={`${BASE}/screens/watch-zones.webp`}
+                  alt="GridGlow home"
+                />
+              </motion.div>
             </div>
           </div>
         </div>

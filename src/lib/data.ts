@@ -58,7 +58,8 @@ export async function getProject(slug: string): Promise<Project | null> {
 }
 
 export async function getProjectSlugs(): Promise<string[]> {
-  if (!isSanityConfigured) return mockProjects.map((p) => p.slug);
+  if (!isSanityConfigured)
+    return mockProjects.filter((p) => !p.comingSoon).map((p) => p.slug);
   try {
     const slugs = await client.fetch<string[]>(projectSlugsQuery, {}, fetchOpts);
     return slugs ?? [];

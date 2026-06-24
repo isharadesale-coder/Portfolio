@@ -319,9 +319,11 @@ function BuildSequence() {
 export default function FocusMateShowcase({
   project,
   next,
+  prev,
 }: {
   project: Project;
   next: { title: string; slug: string };
+  prev: { title: string; slug: string };
 }) {
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -494,25 +496,43 @@ export default function FocusMateShowcase({
         </div>
       </section>
 
-      {/* NEXT PROJECT */}
-      <Link
-        href={`/work/${next.slug}`}
-        className="group block border-t border-white/10 py-16 transition-colors hover:bg-white/[0.03]"
-      >
-        <div className="shell flex items-center justify-between gap-6">
-          <div>
-            <p className="font-dmsans text-[0.7rem] uppercase tracking-[0.28em] text-muted">
-              Next project
-            </p>
-            <p className="mt-3 font-playfair text-5xl font-semibold italic transition-colors group-hover:text-[#9bb07e] md:text-7xl">
-              {next.title}
-            </p>
-          </div>
-          <span className="font-playfair text-4xl text-muted transition-transform group-hover:translate-x-2 group-hover:text-[#9bb07e] md:text-6xl">
-            →
-          </span>
+      {/* PREV / NEXT PROJECT */}
+      <nav className="border-t border-white/10">
+        <div className="shell grid sm:grid-cols-2">
+          <Link
+            href={`/work/${prev.slug}`}
+            className="group flex items-center gap-4 py-12 sm:py-16"
+          >
+            <span className="font-playfair text-3xl text-muted transition-transform group-hover:-translate-x-2 group-hover:text-[#9bb07e] md:text-5xl">
+              ←
+            </span>
+            <span>
+              <span className="block font-dmsans text-[0.68rem] uppercase tracking-[0.28em] text-muted">
+                Previous
+              </span>
+              <span className="mt-2 block font-playfair text-3xl font-semibold italic transition-colors group-hover:text-[#9bb07e] md:text-5xl">
+                {prev.title}
+              </span>
+            </span>
+          </Link>
+          <Link
+            href={`/work/${next.slug}`}
+            className="group flex items-center justify-end gap-4 py-12 text-right sm:border-l sm:border-white/10 sm:py-16 sm:pl-8"
+          >
+            <span>
+              <span className="block font-dmsans text-[0.68rem] uppercase tracking-[0.28em] text-muted">
+                Next
+              </span>
+              <span className="mt-2 block font-playfair text-3xl font-semibold italic transition-colors group-hover:text-[#9bb07e] md:text-5xl">
+                {next.title}
+              </span>
+            </span>
+            <span className="font-playfair text-3xl text-muted transition-transform group-hover:translate-x-2 group-hover:text-[#9bb07e] md:text-5xl">
+              →
+            </span>
+          </Link>
         </div>
-      </Link>
+      </nav>
     </div>
   );
 }

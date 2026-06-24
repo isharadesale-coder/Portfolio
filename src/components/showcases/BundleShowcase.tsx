@@ -18,12 +18,14 @@ function Phone({
   className?: string;
 }) {
   return (
+    // Exact screen aspect so the image sits 1:1 (no object-cover scaling), and a
+    // %-based radius that scales with the box to stay matched to the screens'
+    // baked 30px corners (30/440 ≈ 6.8% wide, 30/956 ≈ 3.1% tall).
     <div
-      className={`relative aspect-[440/956] overflow-hidden rounded-[1.7rem] bg-black p-[5px] shadow-[0_30px_70px_-30px_rgba(0,0,0,0.8)] ring-1 ring-white/10 ${className}`}
+      className={`relative aspect-[440/956] overflow-hidden bg-black shadow-[0_30px_70px_-30px_rgba(0,0,0,0.8)] ring-1 ring-white/10 ${className}`}
+      style={{ borderRadius: "6.8% / 3.1%" }}
     >
-      <div className="relative h-full w-full overflow-hidden rounded-[1.4rem] bg-black">
-        {children}
-      </div>
+      {children}
     </div>
   );
 }
@@ -63,7 +65,8 @@ function PhoneVideo({
 }) {
   return (
     <div
-      className={`overflow-hidden rounded-[1.7rem] shadow-[0_30px_70px_-30px_rgba(0,0,0,0.8)] ${className}`}
+      className={`overflow-hidden shadow-[0_30px_70px_-30px_rgba(0,0,0,0.8)] ${className}`}
+      style={{ borderRadius: "8% / 3.7%" }}
     >
       <video
         autoPlay
@@ -216,9 +219,11 @@ function AppSection({ app }: { app: App }) {
 export default function BundleShowcase({
   project,
   next,
+  prev,
 }: {
   project: Project;
   next: { title: string; slug: string };
+  prev: { title: string; slug: string };
 }) {
   return (
     <div className="bg-[#0a0a0a] font-rubik text-fg">
@@ -299,25 +304,43 @@ export default function BundleShowcase({
         <AppSection key={a.name} app={a} />
       ))}
 
-      {/* NEXT PROJECT */}
-      <Link
-        href={`/work/${next.slug}`}
-        className="group block border-t border-line py-16 transition-colors hover:bg-bg-soft"
-      >
-        <div className="shell flex items-center justify-between gap-6">
-          <div>
-            <p className="font-rubik text-[0.7rem] uppercase tracking-[0.24em] text-muted">
-              Next project
-            </p>
-            <p className="mt-3 font-rubik text-5xl font-bold tracking-tight transition-colors group-hover:text-fg-dim md:text-7xl">
-              {next.title}
-            </p>
-          </div>
-          <span className="font-rubik text-4xl text-muted transition-transform group-hover:translate-x-2 md:text-6xl">
-            →
-          </span>
+      {/* PREV / NEXT PROJECT */}
+      <nav className="border-t border-line">
+        <div className="shell grid sm:grid-cols-2">
+          <Link
+            href={`/work/${prev.slug}`}
+            className="group flex items-center gap-4 py-12 sm:py-16"
+          >
+            <span className="font-rubik text-3xl text-muted transition-transform group-hover:-translate-x-2 group-hover:text-fg md:text-5xl">
+              ←
+            </span>
+            <span>
+              <span className="block font-rubik text-[0.68rem] uppercase tracking-[0.24em] text-muted">
+                Previous
+              </span>
+              <span className="mt-2 block font-rubik text-3xl font-bold tracking-tight transition-colors group-hover:text-fg-dim md:text-5xl">
+                {prev.title}
+              </span>
+            </span>
+          </Link>
+          <Link
+            href={`/work/${next.slug}`}
+            className="group flex items-center justify-end gap-4 py-12 text-right sm:border-l sm:border-line sm:py-16 sm:pl-8"
+          >
+            <span>
+              <span className="block font-rubik text-[0.68rem] uppercase tracking-[0.24em] text-muted">
+                Next
+              </span>
+              <span className="mt-2 block font-rubik text-3xl font-bold tracking-tight transition-colors group-hover:text-fg-dim md:text-5xl">
+                {next.title}
+              </span>
+            </span>
+            <span className="font-rubik text-3xl text-muted transition-transform group-hover:translate-x-2 group-hover:text-fg md:text-5xl">
+              →
+            </span>
+          </Link>
         </div>
-      </Link>
+      </nav>
     </div>
   );
 }

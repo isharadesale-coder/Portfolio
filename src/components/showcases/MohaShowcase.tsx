@@ -151,9 +151,11 @@ const uxLaws = [
 export default function MohaShowcase({
   project,
   next,
+  prev,
 }: {
   project: Project;
   next: { title: string; slug: string };
+  prev: { title: string; slug: string };
 }) {
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -453,25 +455,43 @@ export default function MohaShowcase({
         </div>
       </section>
 
-      {/* NEXT */}
-      <Link
-        href={`/work/${next.slug}`}
-        className="group block border-t border-white/10 py-16 transition-colors hover:bg-white/[0.03]"
-      >
-        <div className="shell flex items-center justify-between gap-6">
-          <div>
-            <p className="text-[0.7rem] uppercase tracking-[0.24em] text-[#7a7163]">
-              Next project
-            </p>
-            <p className="mt-3 font-poppins text-5xl font-semibold tracking-tight transition-colors group-hover:text-[#c2a063] md:text-7xl">
-              {next.title}
-            </p>
-          </div>
-          <span className="font-poppins text-4xl text-[#7a7163] transition-transform group-hover:translate-x-2 md:text-6xl">
-            →
-          </span>
+      {/* PREV / NEXT */}
+      <nav className="border-t border-white/10">
+        <div className="shell grid sm:grid-cols-2">
+          <Link
+            href={`/work/${prev.slug}`}
+            className="group flex items-center gap-4 py-12 sm:py-16"
+          >
+            <span className="font-poppins text-3xl text-[#7a7163] transition-transform group-hover:-translate-x-2 group-hover:text-[#c2a063] md:text-5xl">
+              ←
+            </span>
+            <span>
+              <span className="block text-[0.68rem] uppercase tracking-[0.24em] text-[#7a7163]">
+                Previous
+              </span>
+              <span className="mt-2 block font-poppins text-3xl font-semibold tracking-tight transition-colors group-hover:text-[#c2a063] md:text-5xl">
+                {prev.title}
+              </span>
+            </span>
+          </Link>
+          <Link
+            href={`/work/${next.slug}`}
+            className="group flex items-center justify-end gap-4 py-12 text-right sm:border-l sm:border-white/10 sm:py-16 sm:pl-8"
+          >
+            <span>
+              <span className="block text-[0.68rem] uppercase tracking-[0.24em] text-[#7a7163]">
+                Next
+              </span>
+              <span className="mt-2 block font-poppins text-3xl font-semibold tracking-tight transition-colors group-hover:text-[#c2a063] md:text-5xl">
+                {next.title}
+              </span>
+            </span>
+            <span className="font-poppins text-3xl text-[#7a7163] transition-transform group-hover:translate-x-2 group-hover:text-[#c2a063] md:text-5xl">
+              →
+            </span>
+          </Link>
         </div>
-      </Link>
+      </nav>
     </div>
   );
 }

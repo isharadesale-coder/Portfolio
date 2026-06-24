@@ -165,9 +165,11 @@ const team = [
 export default function GridGlowShowcase({
   project,
   next,
+  prev,
 }: {
   project: Project;
   next: { title: string; slug: string };
+  prev: { title: string; slug: string };
 }) {
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -587,25 +589,43 @@ export default function GridGlowShowcase({
         </div>
       </section>
 
-      {/* NEXT PROJECT */}
-      <Link
-        href={`/work/${next.slug}`}
-        className="group block border-t border-white/10 py-16 transition-colors hover:bg-white/[0.03]"
-      >
-        <div className="shell flex items-center justify-between gap-6">
-          <div>
-            <p className="font-poppins text-[0.7rem] uppercase tracking-[0.24em] text-[#6f8a78]">
-              Next project
-            </p>
-            <p className="mt-3 font-poppins text-5xl font-extrabold tracking-tight transition-colors group-hover:text-[#3fce72] md:text-7xl">
-              {next.title}
-            </p>
-          </div>
-          <span className="font-poppins text-4xl text-[#6f8a78] transition-transform group-hover:translate-x-2 group-hover:text-[#3fce72] md:text-6xl">
-            →
-          </span>
+      {/* PREV / NEXT PROJECT */}
+      <nav className="border-t border-white/10">
+        <div className="shell grid sm:grid-cols-2">
+          <Link
+            href={`/work/${prev.slug}`}
+            className="group flex items-center gap-4 py-12 sm:py-16"
+          >
+            <span className="font-poppins text-3xl text-[#6f8a78] transition-transform group-hover:-translate-x-2 group-hover:text-[#3fce72] md:text-5xl">
+              ←
+            </span>
+            <span>
+              <span className="block font-poppins text-[0.68rem] uppercase tracking-[0.24em] text-[#6f8a78]">
+                Previous
+              </span>
+              <span className="mt-2 block font-poppins text-3xl font-extrabold tracking-tight transition-colors group-hover:text-[#3fce72] md:text-5xl">
+                {prev.title}
+              </span>
+            </span>
+          </Link>
+          <Link
+            href={`/work/${next.slug}`}
+            className="group flex items-center justify-end gap-4 py-12 text-right sm:border-l sm:border-white/10 sm:py-16 sm:pl-8"
+          >
+            <span>
+              <span className="block font-poppins text-[0.68rem] uppercase tracking-[0.24em] text-[#6f8a78]">
+                Next
+              </span>
+              <span className="mt-2 block font-poppins text-3xl font-extrabold tracking-tight transition-colors group-hover:text-[#3fce72] md:text-5xl">
+                {next.title}
+              </span>
+            </span>
+            <span className="font-poppins text-3xl text-[#6f8a78] transition-transform group-hover:translate-x-2 group-hover:text-[#3fce72] md:text-5xl">
+              →
+            </span>
+          </Link>
         </div>
-      </Link>
+      </nav>
     </div>
   );
 }

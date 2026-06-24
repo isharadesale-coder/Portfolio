@@ -39,6 +39,8 @@ export default async function ProjectPage({
   const all = (await getProjects()).filter((p) => !p.comingSoon);
   const idx = all.findIndex((p) => p.slug === slug);
   const next = all[(idx + 1) % all.length];
+  const prev = all[(idx - 1 + all.length) % all.length];
+  const prevNav = { title: prev.title, slug: prev.slug };
 
   // Bespoke Apple-style case study for FocusMate.
   if (slug === "focusmate") {
@@ -46,6 +48,7 @@ export default async function ProjectPage({
       <FocusMateShowcase
         project={project}
         next={{ title: next.title, slug: next.slug }}
+        prev={prevNav}
       />
     );
   }
@@ -56,6 +59,7 @@ export default async function ProjectPage({
       <GridGlowShowcase
         project={project}
         next={{ title: next.title, slug: next.slug }}
+        prev={prevNav}
       />
     );
   }
@@ -66,6 +70,7 @@ export default async function ProjectPage({
       <MohaShowcase
         project={project}
         next={{ title: next.title, slug: next.slug }}
+        prev={prevNav}
       />
     );
   }
@@ -76,6 +81,7 @@ export default async function ProjectPage({
       <BundleShowcase
         project={project}
         next={{ title: next.title, slug: next.slug }}
+        prev={prevNav}
       />
     );
   }
@@ -218,23 +224,39 @@ export default async function ProjectPage({
         </div>
       )}
 
-      {/* Next project */}
-      <Link
-        href={`/work/${next.slug}`}
-        className="group mt-28 block border-t border-line py-16 transition-colors hover:bg-bg-soft"
-      >
-        <div className="shell flex items-center justify-between gap-6">
-          <div>
-            <p className="eyebrow mb-3">Next project</p>
-            <p className="display-lg transition-colors group-hover:text-accent">
-              {next.title}
-            </p>
-          </div>
-          <span className="font-display text-4xl text-muted transition-transform group-hover:translate-x-2 group-hover:text-accent md:text-6xl">
-            →
-          </span>
+      {/* Prev / Next project */}
+      <nav className="mt-28 border-t border-line">
+        <div className="shell grid sm:grid-cols-2">
+          <Link
+            href={`/work/${prevNav.slug}`}
+            className="group flex items-center gap-4 py-12 sm:py-16"
+          >
+            <span className="font-display text-3xl text-muted transition-transform group-hover:-translate-x-2 group-hover:text-accent md:text-5xl">
+              ←
+            </span>
+            <span>
+              <span className="eyebrow mb-2 block">Previous</span>
+              <span className="display-lg block !text-3xl transition-colors group-hover:text-accent md:!text-5xl">
+                {prevNav.title}
+              </span>
+            </span>
+          </Link>
+          <Link
+            href={`/work/${next.slug}`}
+            className="group flex items-center justify-end gap-4 py-12 text-right sm:border-l sm:border-line sm:py-16 sm:pl-8"
+          >
+            <span>
+              <span className="eyebrow mb-2 block">Next</span>
+              <span className="display-lg block !text-3xl transition-colors group-hover:text-accent md:!text-5xl">
+                {next.title}
+              </span>
+            </span>
+            <span className="font-display text-3xl text-muted transition-transform group-hover:translate-x-2 group-hover:text-accent md:text-5xl">
+              →
+            </span>
+          </Link>
         </div>
-      </Link>
+      </nav>
     </article>
   );
 }

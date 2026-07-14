@@ -17,24 +17,6 @@ const services = [
   "Design Systems",
 ];
 
-// Longer hand-drawn curved arrow (points toward bottom-right by default; rotate/flip per placement).
-function Doodle({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 160 70"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M6 16 C 60 0 118 10 150 52" />
-      <path d="M128 48 L152 58 L138 30" />
-    </svg>
-  );
-}
-
 // Small hand-drawn doodle icons (line style) used in place of emojis.
 function Icon({ name, className = "" }: { name: string; className?: string }) {
   const p = {
@@ -104,52 +86,52 @@ const facts: {
   arrow: string; // position + rotation of the arrow
 }[] = [
   {
-    text: "I love to travel",
+    text: "loves to travel",
     icon: "plane",
-    wrap: "top-[2%] -left-8 -translate-x-full -rotate-3 text-right",
-    arrow: "-right-24 top-2 h-12 w-20 rotate-[6deg]",
+    wrap: "-top-16 -left-3 -translate-x-full text-right",
+    arrow: "left-0 top-0 rotate-[216deg]",
   },
   {
     text: "big F1 fan",
     icon: "car",
-    wrap: "top-[42%] -left-8 -translate-x-full rotate-2 text-right",
-    arrow: "-right-24 -top-1 h-12 w-20 rotate-[92deg]",
+    wrap: "top-1/2 -left-3 -translate-x-full -translate-y-1/2 text-right",
+    arrow: "left-0 top-1/2 rotate-180",
   },
   {
-    text: "I love badminton",
+    text: "plays badminton",
     icon: "shuttle",
-    wrap: "bottom-[6%] -left-8 -translate-x-full -rotate-2 text-right",
-    arrow: "-right-24 -top-2 h-12 w-20 rotate-[188deg]",
+    wrap: "-bottom-16 -left-3 -translate-x-full text-right",
+    arrow: "left-0 top-full rotate-[144deg]",
   },
   {
-    text: "always taking pictures & videos",
+    text: "takes pictures & videos",
     icon: "camera",
-    wrap: "top-[3%] -right-8 translate-x-full rotate-3 text-left",
-    arrow: "-left-24 top-2 h-12 w-20 -scale-x-100 rotate-[6deg]",
+    wrap: "-top-16 -right-3 translate-x-full text-left",
+    arrow: "left-full top-0 rotate-[324deg]",
   },
   {
-    text: "I draw",
+    text: "draws",
     icon: "pencil",
-    wrap: "top-[38%] -right-8 translate-x-full -rotate-2 text-left",
-    arrow: "-left-24 -top-1 h-12 w-20 -scale-x-100 rotate-[92deg]",
+    wrap: "top-1/2 -right-3 -translate-y-1/2 translate-x-full text-left",
+    arrow: "left-full top-1/2 rotate-0",
   },
   {
-    text: "I love cinematic masterpieces",
+    text: "explores cinematic masterpieces",
     icon: "film",
-    wrap: "bottom-[8%] -right-8 translate-x-full rotate-2 text-left",
-    arrow: "-left-24 -top-2 h-12 w-20 -scale-x-100 rotate-[188deg]",
+    wrap: "-bottom-16 -right-3 translate-x-full text-left",
+    arrow: "left-full top-full rotate-[36deg]",
   },
   {
-    text: "I like climbing trees",
+    text: "likes climbing trees",
     icon: "tree",
-    wrap: "-top-20 left-1/2 -translate-x-1/2 -rotate-2 text-center",
-    arrow: "left-1/2 -bottom-14 h-12 w-20 -translate-x-1/2 rotate-[110deg]",
+    wrap: "-top-20 left-1/2 -translate-x-1/2 text-center",
+    arrow: "left-1/2 top-0 rotate-[270deg]",
   },
   {
-    text: "I love animals — I have 2 pets",
+    text: "animal lover — has 2 pets",
     icon: "paw",
-    wrap: "-bottom-24 left-1/2 -translate-x-1/2 rotate-2 text-center",
-    arrow: "left-1/2 -top-14 h-12 w-20 -translate-x-1/2 rotate-[250deg]",
+    wrap: "-bottom-20 left-1/2 -translate-x-1/2 text-center",
+    arrow: "left-1/2 top-full rotate-90",
   },
 ];
 
@@ -205,7 +187,7 @@ export default function About() {
   }, []);
 
   return (
-    <section id="about" className="shell overflow-x-clip py-24 md:py-36">
+    <section id="about" className="shell py-24 md:py-36">
       <p className="eyebrow mb-10 md:mb-14">About</p>
 
       {/* Half-and-half: statement | portrait */}
@@ -221,7 +203,7 @@ export default function About() {
         </div>
 
         {/* Portrait with playful hover doodles */}
-        <div className="flex justify-center">
+        <div className="flex justify-center xl:py-16">
           <div className="group relative">
             <div className="relative w-[240px] overflow-hidden rounded-[1.8rem] ring-1 ring-line transition-transform duration-500 group-hover:-rotate-1 sm:w-[300px] lg:w-[320px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -235,17 +217,17 @@ export default function About() {
 
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-0 hidden lg:block"
+              className="pointer-events-none absolute inset-0 hidden xl:block"
             >
+              {/* labels + doodle icons */}
               {facts.map((f, i) => (
                 <div
                   key={f.text}
-                  className={`absolute flex w-max max-w-[9.5rem] items-center gap-1.5 font-hand text-2xl leading-[1.05] text-fg opacity-0 transition-all duration-500 group-hover:opacity-100 ${f.wrap}`}
-                  style={{ transitionDelay: `${i * 60}ms` }}
+                  className={`absolute flex w-max max-w-[8.5rem] items-center gap-2 font-hand text-[1.5rem] leading-[1.05] text-fg opacity-0 transition-all duration-500 group-hover:opacity-100 ${f.wrap}`}
+                  style={{ transitionDelay: `${i * 60 + 120}ms` }}
                 >
                   <span>{f.text}</span>
-                  <Icon name={f.icon} className="h-6 w-6 shrink-0 text-fg" />
-                  <Doodle className={`absolute text-fg-dim ${f.arrow}`} />
+                  <Icon name={f.icon} className="h-10 w-10 shrink-0 text-fg" />
                 </div>
               ))}
             </div>
@@ -253,7 +235,7 @@ export default function About() {
         </div>
       </div>
 
-      <div className="mt-20 border-t border-line pt-12 md:mt-28">
+      <div className="mt-20 border-t border-line pt-12 md:mt-28 xl:mt-40">
         <Reveal>
           <p className="eyebrow mb-7">Services</p>
           <ul className="grid gap-x-12 sm:grid-cols-2">

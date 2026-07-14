@@ -110,6 +110,9 @@ a {
 .font-rubik {
   font-family: var(--font-rubik), system-ui, sans-serif;
 }
+.font-hand {
+  font-family: var(--font-caveat), "Comic Sans MS", cursive;
+}
 
 .eyebrow {
   font-family: var(--font-geist), sans-serif;

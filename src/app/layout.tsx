@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import {
   Anton,
   Archivo,
+  Caveat,
   DM_Sans,
   Geist,
   Inter,
@@ -75,6 +76,14 @@ const rubik = Rubik({
   display: "swap",
 });
 
+// Handwritten font for the About hover doodles
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-caveat",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Ishika Desale — Designer & Creative Developer",
   description:
@@ -93,7 +102,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geist.variable} ${anton.variable} ${archivo.variable} ${inter.variable} ${playfair.variable} ${dmSans.variable} ${poppins.variable} ${pinyon.variable} ${rubik.variable} antialiased`}
+      className={`${geist.variable} ${anton.variable} ${archivo.variable} ${inter.variable} ${playfair.variable} ${dmSans.variable} ${poppins.variable} ${pinyon.variable} ${rubik.variable} ${caveat.variable} antialiased`}
     >
       <body>{children}</body>
     </html>

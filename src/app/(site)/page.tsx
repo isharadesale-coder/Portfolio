@@ -1,4 +1,5 @@
 import About from "@/components/About";
+import AGlimpse from "@/components/AGlimpse";
 import Background from "@/components/Background";
 import Contact from "@/components/Contact";
 import Hero from "@/components/Hero";
@@ -15,6 +16,7 @@ export default async function Home() {
         <Hero />
         <Works projects={projects} />
         <About />
+        <AGlimpse />
         <Contact />
       </div>
     </>
